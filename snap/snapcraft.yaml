@@ -1,0 +1,25 @@
+name: config-provider
+base: core24 
+version: '0.1'
+summary: Config provider
+description: Config provider example for docker config
+
+grade: devel 
+confinement: strict
+
+plugs:
+  docker:
+    interface: content
+    content: docker-config
+    target: $SNAP_DATA/docker-config
+
+parts:
+  tools:
+    plugin: nil
+    stage-packages:
+      - tree
+      - jq
+
+apps:
+  tree:
+    command: usr/bin/tree

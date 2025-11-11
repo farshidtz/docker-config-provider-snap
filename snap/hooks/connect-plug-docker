@@ -1,0 +1,13 @@
+#!/bin/bash
+
+tag="snap.$SNAP_INSTANCE_NAME.hook.install"
+# Redirect stdout to stdout+syslog
+exec 1> >(tee >(logger --tag=$tag))
+# Redirect stderr to stderr+syslog
+exec 2> >(logger --stderr --priority error --tag=$tag)
+
+# Set log-level to debug
+CONFIG_FILE="$SNAP_DATA/docker-config/daemon.json"  
+jq '.["log-level"] = "debug"' "$CONFIG_FILE" \
+    > "$CONFIG_FILE.tmp" && \
+    mv "$CONFIG_FILE.tmp" "$CONFIG_FILE"
